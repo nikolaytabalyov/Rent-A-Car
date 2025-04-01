@@ -48,6 +48,8 @@ namespace RentACar.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
+            var cars = _context.Cars.ToList();
+            ViewBag.Cars = new SelectList(cars, "Id", "Make");
             return View();
         }
 
@@ -58,6 +60,7 @@ namespace RentACar.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate")] Reservation reservation)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
