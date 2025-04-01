@@ -49,7 +49,7 @@ namespace RentACar.Controllers
         public IActionResult Create()
         {
             var cars = _context.Cars.ToList();
-            ViewBag.Cars = new SelectList(cars, "Id", "Make");
+            ViewBag.Cars = new SelectList(cars, "Id", "Model");
             return View();
         }
 
