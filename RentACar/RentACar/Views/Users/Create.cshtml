@@ -1,0 +1,23 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+<h1>Create User</h1>
+
+<form asp-action="Create">
+    <div>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" />
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordHash"></label>
+        <input asp-for="PasswordHash" />
+        <span asp-validation-for="PasswordHash"></span>
+    </div>
+    <button type="submit">Create</button>
+</form>
+<a asp-action="Index">Back to List</a>
