@@ -22,12 +22,14 @@ namespace RentACar.Controllers
         }
 
         // GET: Reservations
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Reservations.ToListAsync());
         }
 
         // GET: Reservations/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -71,6 +73,7 @@ namespace RentACar.Controllers
         }
 
         // GET: Reservations/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +94,7 @@ namespace RentACar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate")] Reservation reservation)
         {
             if (id != reservation.Id)
@@ -122,6 +126,7 @@ namespace RentACar.Controllers
         }
 
         // GET: Reservations/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,6 +147,7 @@ namespace RentACar.Controllers
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
