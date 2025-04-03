@@ -40,7 +40,12 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Index">Back to List</a>
+    }
+    <a asp-controller="Cars" asp-action="Index">Back to Cars</a>
+
 </div>
 
 @section Scripts {
