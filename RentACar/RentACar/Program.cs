@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RentACar.Data;
 using System.Collections.Generic;
 
-namespace RentACar
-{
+namespace RentACar {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +22,7 @@ namespace RentACar
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
@@ -32,7 +32,17 @@ namespace RentACar
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment()) {
+            using(var scope = app.Services.CreateScope()) {
+                var services = scope.ServiceProvider;
+                try {
+                    CreateRoles(services).Wait();
+                } catch(Exception ex) {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while creating roles.");
+                }
+            }
+
+            if(app.Environment.IsDevelopment()) {
                 app.UseMigrationsEndPoint();
             } else {
                 app.UseExceptionHandler("/Home/Error");
@@ -52,6 +62,19 @@ namespace RentACar
             app.MapRazorPages();
 
             app.Run();
+        }
+
+        private static async Task CreateRoles(IServiceProvider serviceProvider) {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            if(!await roleManager.RoleExistsAsync("Admin")) {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if(!await roleManager.RoleExistsAsync("User")) {
+                await roleManager.CreateAsync(new IdentityRole("User"));
+            }
         }
     }
 }
