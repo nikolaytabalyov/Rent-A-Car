@@ -164,5 +164,21 @@ namespace RentACar.Controllers
         {
             return _context.Reservations.Any(e => e.Id == id);
         }
+
+
+        [HttpPost]
+        public JsonResult Approve(int id) {
+            var reservation = _context.Reservations.Find(id);
+            if (reservation == null) {
+                return Json(new { success = false, message = "Reservation not found" });
+            }
+
+            reservation.IsApproved = true;
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+
     }
 }

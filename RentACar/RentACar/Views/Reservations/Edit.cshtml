@@ -33,9 +33,30 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
+
+            <button id="approveButton">Approve</button>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $("#approveButton").click(function () {
+                        $.post("/Reservations/Approve", { id: @Model.Id }, function (response) {
+                            if (response.success) {
+                                alert("Approved successfully!");
+                                $("#approveButton").text("Approved").prop("disabled", true);
+                            } else {
+                                alert("Failed to approve: " + response.message);
+                            }
+                        }).fail(function () {
+                            alert("Error connecting to the server.");
+                        });
+                    });
+                });
+            </script>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
