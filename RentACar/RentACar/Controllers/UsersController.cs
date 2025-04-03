@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RentACar.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 [Authorize(Roles = "Admin")] // Only allow Admins to access this controller
 public class UsersController : Controller {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public UsersController(UserManager<User> userManager) {
+    public UsersController(UserManager<IdentityUser> userManager) {
         _userManager = userManager;
     }
 
@@ -28,24 +27,15 @@ public class UsersController : Controller {
     // POST: Users/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(User model) {
-        if(ModelState.IsValid) {
-            var user = new User {
-                UserName = model.UserName,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                EGN = model.EGN,
-                PhoneNumber = model.PhoneNumber
-            };
+    public async Task<IActionResult> Create(IdentityUser model) {
+        if (ModelState.IsValid) {
+            var result = await _userManager.CreateAsync(model, "DefaultPassword123!"); // Set a default password
 
-            var result = await _userManager.CreateAsync(user, model.Password); // Use the provided password
-
-            if(result.Succeeded) {
+            if (result.Succeeded) {
                 return RedirectToAction(nameof(Index));
             }
 
-            foreach(var error in result.Errors) {
+            foreach (var error in result.Errors) {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
@@ -55,7 +45,7 @@ public class UsersController : Controller {
     // GET: Users/Edit/5
     public async Task<IActionResult> Edit(string id) {
         var user = await _userManager.FindByIdAsync(id);
-        if(user == null) {
+        if (user == null) {
             return NotFound();
         }
 
@@ -65,26 +55,22 @@ public class UsersController : Controller {
     // POST: Users/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(User model) {
-        if(ModelState.IsValid) {
-            var user = await _userManager.FindByIdAsync(model.Id.ToString());
-            if(user == null) {
+    public async Task<IActionResult> Edit(IdentityUser model) {
+        if (ModelState.IsValid) {
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null) {
                 return NotFound();
             }
 
             user.Email = model.Email;
             user.UserName = model.UserName;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.EGN = model.EGN;
-            user.PhoneNumber = model.PhoneNumber;
 
             var result = await _userManager.UpdateAsync(user);
-            if(result.Succeeded) {
+            if (result.Succeeded) {
                 return RedirectToAction(nameof(Index));
             }
 
-            foreach(var error in result.Errors) {
+            foreach (var error in result.Errors) {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
@@ -94,7 +80,7 @@ public class UsersController : Controller {
     // GET: Users/Delete/5
     public async Task<IActionResult> Delete(string id) {
         var user = await _userManager.FindByIdAsync(id);
-        if(user == null) {
+        if (user == null) {
             return NotFound();
         }
 
@@ -106,7 +92,7 @@ public class UsersController : Controller {
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id) {
         var user = await _userManager.FindByIdAsync(id);
-        if(user != null) {
+        if (user != null) {
             await _userManager.DeleteAsync(user);
         }
         return RedirectToAction(nameof(Index));
