@@ -67,7 +67,7 @@ namespace RentACar.Controllers
             {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Cars"); 
             }
             return View(reservation);
         }
