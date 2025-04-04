@@ -4,7 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/h1.css" />
+
+<style>
+    a {
+        color:white;
+        text-decoration: none
+    }
+</style>
+
+<h1>Cars</h1>
 
 @if (User.IsInRole("Admin"))
 {
@@ -16,22 +25,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Make)
+                Make
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                Model
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Year)
+                Year
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PassengerSeats)
+                Passenger Seats
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerDay)
+                Price Per Day
             </th>
             <th></th>
         </tr>
@@ -39,7 +48,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="table-dark">
                 <td>
                     @Html.DisplayFor(modelItem => item.Make)
                 </td>
@@ -60,13 +69,13 @@
                 </td>
                 <td>
 
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="active" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     @if (User.IsInRole("Admin"))
                     {
 
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="active" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
 
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="active" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     }
                 </td>
             </tr>

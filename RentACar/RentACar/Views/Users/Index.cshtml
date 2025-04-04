@@ -1,25 +1,34 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/h1.css" />
+
+<style>
+    a {
+        color:white;
+        text-decoration: none
+    }
+</style>
+
 <h1>Users</h1>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Email</th>
-            <th>UserName</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Username</th>
+            <th>Email Confirmed</th>
+            @* <th>Password Hash</th> *@
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
-            <tr>
+            <tr class="table-dark">
                 <td>@user.Email</td>
                 <td>@user.UserName</td>
                 <td>@user.EmailConfirmed</td>
-                <td>@user.PasswordHash</td>
+                @* <td>@user.PasswordHash</td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
