@@ -60,7 +60,7 @@ namespace RentACar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate,IsApproved")] Reservation reservation)
         {
             
             if (ModelState.IsValid)
@@ -95,7 +95,7 @@ namespace RentACar.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate,IsApproved")] Reservation reservation)
         {
             if (id != reservation.Id)
             {
