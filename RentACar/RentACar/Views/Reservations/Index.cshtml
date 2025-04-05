@@ -11,35 +11,33 @@
         color: white;
         text-decoration: none
     }
+    #heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+    #heading-box button {
+        float: right;
+        height: 4em
+    }
 </style>
 
-<h1>Reservations</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div id="heading-box">
+    <h1>Reservations</h1>
+    <button type="button" class="btn btn-dark btn-sm">
+        <a class="active" asp-action="Create">Create</a>
+    </button>
+</div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Car Id
-            </th>
-            <th>
-                User Id
-            </th>
-            <th>
-                Start Date
-            </th>
-            <th>
-                End Date
-            </th>
-            <th>
-                Is Approved
-            </th>
-            <th>
-                Actions
-            </th>
+            <th>Car Id</th>
+            <th>User Id</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Is Approved</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -61,9 +59,9 @@
                     @Html.DisplayFor(modelItem => item.IsApproved)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="active" asp-action="Details" asp-route-id="@item.Id">Details |</a>
+                    <a class="active" asp-action="Edit" asp-route-id="@item.Id">Edit |</a>
+                    <a class="active" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

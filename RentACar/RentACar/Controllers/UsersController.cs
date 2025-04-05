@@ -97,4 +97,14 @@ public class UsersController : Controller {
         }
         return RedirectToAction(nameof(Index));
     }
+
+    // GET: Users/Details/5
+    public async Task<IActionResult> Details(string id) {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) {
+            return NotFound();
+        }
+
+        return View(user);
+    }
 }

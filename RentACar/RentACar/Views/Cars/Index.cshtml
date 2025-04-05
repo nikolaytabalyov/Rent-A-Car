@@ -11,38 +11,34 @@
         color:white;
         text-decoration: none
     }
+    #heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+    #heading-box button {
+        float: right;
+        height: 4em
+    }
 </style>
 
-<h1>Cars</h1>
+<div id="heading-box">
+    <h1>Cars</h1>
+    <button type="button" class="btn btn-dark btn-sm"> 
+        <a class="active" asp-action="Create">Create</a>
+    </button>
+</div>
 
-@if (User.IsInRole("Admin"))
-{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-}
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Make
-            </th>
-            <th>
-                Model
-            </th>
-            <th>
-                Year
-            </th>
-            <th>
-                Passenger Seats
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Price Per Day
-            </th>
-            <th></th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Passenger Seats</th>
+            <th>Description</th>
+            <th>Price Per Day</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -68,14 +64,11 @@
                     @Html.DisplayFor(modelItem => item.PricePerDay)
                 </td>
                 <td>
-
-                    <a class="active" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="active" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     @if (User.IsInRole("Admin"))
                     {
-
-                        <a class="active" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-
-                        <a class="active" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="active" asp-action="Edit" asp-route-id="@item.Id">Edit |</a> 
+                        <a class="active" asp-action="Delete" asp-route-id="@item.Id">Delete </a>
                     }
                 </td>
             </tr>

@@ -4,12 +4,26 @@
 
 <style>
     a {
-        color:white;
+        color: white;
         text-decoration: none
+    }
+    #heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+    #heading-box button {
+        float: right;
+        height: 4em
     }
 </style>
 
-<h1>Users</h1>
+<div id="heading-box">
+    <h1>Users</h1>
+    <button type="button" class="btn btn-dark btn-sm">
+        <a class="active" asp-action="Create">Create</a>
+    </button>
+</div>
 
 <table class="table">
     <thead>
@@ -17,7 +31,6 @@
             <th>Email</th>
             <th>Username</th>
             <th>Email Confirmed</th>
-            @* <th>Password Hash</th> *@
             <th>Actions</th>
         </tr>
     </thead>
@@ -28,14 +41,12 @@
                 <td>@user.Email</td>
                 <td>@user.UserName</td>
                 <td>@user.EmailConfirmed</td>
-                @* <td>@user.PasswordHash</td> *@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                    <a class="active" asp-action="Details" asp-route-id="@user.Id">Details |</a>
+                    <a class="active" asp-action="Edit" asp-route-id="@user.Id">Edit |</a>
+                    <a class="active" asp-action="Delete" asp-route-id="@user.Id">Delete </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<a asp-controller="Users" asp-action="Create">Create New User</a>

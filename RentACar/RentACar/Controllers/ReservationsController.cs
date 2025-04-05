@@ -55,20 +55,21 @@ namespace RentACar.Controllers
             return View();
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate,IsApproved")] Reservation reservation)
-        {
-            
-            if (ModelState.IsValid)
-            {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Cars"); 
+        public async Task<IActionResult> Create([Bind("Id,CarId,User Id,StartDate,EndDate,IsApproved")] Reservation reservation) {
+            if (ModelState.IsValid) {
+                if (IsCarAvailable(reservation.CarId, reservation.StartDate, reservation.EndDate)) {
+                    _context.Add(reservation);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Cars");
+                } else {
+                    ModelState.AddModelError("", "Автомобилът е зает през избрания период.");
+                }
             }
+            var cars = _context.Cars.ToList();
+            ViewBag.Cars = new SelectList(cars, "Id", "Model");
             return View(reservation);
         }
 
@@ -179,6 +180,10 @@ namespace RentACar.Controllers
             return Json(new { success = true });
         }
 
-
+        private bool IsCarAvailable(int carId, DateTime startDate, DateTime endDate) {
+            // Проверка за резервации, които се припокриват с искания период
+            return !_context.Reservations.Any(r => r.CarId == carId &&
+                r.StartDate < endDate && r.EndDate > startDate);
+        }
     }
 }
